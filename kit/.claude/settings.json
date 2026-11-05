@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(git push *)",
+      "Artifact"
+    ],
+    "deny": []
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/autopilot/.claude/hooks/outward_guard.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+#!/bin/bash
+# Open the autopilot cockpit: a Claude Code session in the cockpit folder with Chrome, kept awake by caffeinate
+# (-i idle sleep, -m disk sleep, -s system sleep on AC power) for exactly as long as the session runs.
+# Closing the lid still sleeps a MacBook unless it is on AC with an external display.
+# The PR watch (pr_watch.py --loop) runs alongside and is killed on exit; after a kill -9 of this wrapper it
+# notices it was orphaned and exits within 15 s.
+cockpit="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$cockpit" || exit 1
+export AUTOPILOT_HOME="${AUTOPILOT_HOME:-$cockpit}"
+mkdir -p "$AUTOPILOT_HOME/state"
+setting() { python3 -c "import json,sys;c=json.load(open('config.json'));print(eval(sys.argv[1]))" "$1" 2>/dev/null; }
+if [ "$(setting "c.get('pr_watch',{}).get('enabled',True)")" = "True" ]; then
+  python3 .claude/skills/autopilot/scripts/pr_watch.py --loop >>"$AUTOPILOT_HOME/state/pr-watch.log" 2>&1 &
+  watcher=$!
+  trap 'kill "$watcher" 2>/dev/null' EXIT
+fi
+chrome=()
+[ "$(setting "c.get('cockpit_chrome', bool(c.get('logins')))")" = "True" ] && chrome=(--chrome)
+caffeinate -ims claude -n ap-cockpit "${chrome[@]}" "$@"

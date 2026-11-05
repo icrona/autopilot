@@ -1,0 +1,5 @@
+#!/bin/sh
+# Planned adapter slot: relay an urgent notification through Hermes (e.g. to a phone).
+# Called by ap.notify as: hermes <title> <message> <kind>. Set config.json → notify.channel to "hermes" once wired.
+echo "hermes notifier is not wired yet (see adapters/README.md)" >&2
+exit 1

@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+"""Example intake adapter: a stub for a generic issue tracker (GitHub Issues shown; swap for Linear, Jira, ...).
+Read-only. Prints {"items": [...]} in the shape adapters/README.md describes. Reads the open issues assigned to the
+owner under every login in github.accounts (or gh's active account when there is only github.me)."""
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
+import ap  # noqa: E402
+import intake_github  # noqa: E402
+
+items, seen = [], set()
+try:
+    for account in intake_github.accounts(ap.config()):
+        for issue in intake_github.gh("search", "issues", *intake_github.scope_args(account), "--assignee=@me",
+                                      "--state=open", "--json", "number,title,url,repository,createdAt,updatedAt",
+                                      "--limit", "50", account=account["via"]):
+            if issue["url"] not in seen:
+                seen.add(issue["url"])
+                items.append({"source": "github-issues",
+                              "id": f"{issue['repository']['nameWithOwner']}#{issue['number']}",
+                              "title": issue["title"], "url": issue["url"], "kind": "ticket",
+                              "created": issue["createdAt"], "updated": issue["updatedAt"], "asks_me": True,
+                              "excerpt": ""})
+except Exception as error:  # a failing source must show as an error, never as "no issues"
+    sys.exit(str(error))
+print(json.dumps({"items": items}))

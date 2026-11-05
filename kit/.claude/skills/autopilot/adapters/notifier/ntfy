@@ -1,0 +1,6 @@
+#!/bin/sh
+# Example notifier adapter: push to an ntfy topic (phone alerts). Set NTFY_TOPIC in the environment.
+# Called by ap.notify as: ntfy <title> <message> <kind>. Outward by nature: the bootstrap asks before enabling it.
+[ -n "$NTFY_TOPIC" ] || { echo "NTFY_TOPIC is not set" >&2; exit 1; }
+priority=default; [ "$3" = "urgent" ] && priority=high
+exec curl -fsS -H "Title: $1" -H "Priority: $priority" -d "$2" "https://ntfy.sh/$NTFY_TOPIC" >/dev/null

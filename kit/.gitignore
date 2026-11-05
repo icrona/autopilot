@@ -1,0 +1,9 @@
+# Local only: day state, task registry, session records and the generated board
+state/
+board.html
+config.local.json
+.claude/settings.local.json
+__pycache__/
+.DS_Store
+# Worktrees of background sessions dispatched into this repo
+.claude/worktrees/

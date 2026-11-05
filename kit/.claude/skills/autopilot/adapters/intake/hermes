@@ -1,0 +1,7 @@
+#!/bin/sh
+# Planned adapter slot: Hermes agent as an intake source (tasks, reminders or messages it collected).
+# Wire it on the target machine: read Hermes' output (CLI, local API or export file) READ-ONLY and print
+#   {"items": [{"source": "hermes", "id": "...", "title": "...", "url": "...", "kind": "...", ...}]}
+# Until then it reports itself as not configured, so enabling it by mistake shows up as an intake error.
+echo "hermes intake adapter is not wired yet (see adapters/README.md)" >&2
+exit 1

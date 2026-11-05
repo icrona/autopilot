@@ -1,0 +1,74 @@
+{
+  "owner": {
+    "name": "Sam"
+  },
+  "timezone": "Europe/Berlin",
+  "timezone_label": "",
+  "workday": {
+    "start": "09:00",
+    "end": "18:00",
+    "lunch": {
+      "start": "12:30",
+      "end": "13:30"
+    },
+    "interrupt_buffer_pct": 15
+  },
+  "max_parallel_background": 3,
+  "touchpoints_min": {
+    "plan_approval": 10,
+    "result_review": 25,
+    "login_check": 2
+  },
+  "windows": [
+    {
+      "id": "release-cutoff",
+      "utc": "12:00",
+      "kind": "deadline",
+      "label": "Example: release prep must be done before this"
+    }
+  ],
+  "repos": {
+    "my-app": {
+      "path": "~/code/my-app",
+      "github": "sam/my-app",
+      "base": "main"
+    },
+    "dotfiles": {
+      "path": "~/code/dotfiles",
+      "github": "sam/dotfiles",
+      "base": "main",
+      "read_only": true
+    }
+  },
+  "github": {
+    "me": "sam",
+    "search_scope": "",
+    "teams": [],
+    "accounts": []
+  },
+  "intake": {
+    "github": true,
+    "local": true,
+    "tracker": null,
+    "adapters": []
+  },
+  "logins": [],
+  "cockpit_chrome": false,
+  "pr_watch": {
+    "enabled": true,
+    "interval_s": 600,
+    "feedback_interval_s": 3600,
+    "feedback_auto_dispatch": false,
+    "feedback_include_bots": false,
+    "stale_idle_days": 30,
+    "auto_dispatch": false
+  },
+  "notify": {
+    "channel": "macos",
+    "remind_after_min": 20,
+    "window_risk_min": 30,
+    "quiet_hours_allow": [
+      "urgent"
+    ]
+  }
+}
